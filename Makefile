@@ -6,7 +6,7 @@
 #    By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 18:41:02 by sebasnadu         #+#    #+#              #
-#    Updated: 2023/09/13 20:03:44 by sebasnadu        ###   ########.fr        #
+#    Updated: 2023/09/14 17:50:02 by sebasnadu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ LIBFT_DIR 		= ./LIBFT
 LIBFT_PATH		= $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS 	= -L $(LIBFT_DIR) -lft
 
-INCLUDES			= -I ./includes -I $(LIBFT_DIR)/includes
+# INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I/opt/X11/include -I$(GPATH)
+INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I$(GPATH)
 CC 						= cc
 RM 						= rm -rf
 PRINTF				= printf
@@ -49,12 +50,13 @@ OBJ_SUB_DIRS	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC_SUB_DIRS))
 OBJ						= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC:.c=.o))
 
 ifeq ($(UNAME), Darwin)
-	GFLAGS			= -framework OpenGL -framework AppKit -l z
-	GPATH				= ./mlx-macos
-	MLX_PATH		= $(GPATH)/libmlx.dylib
+	# GFLAGS			= -L$(GPATH) -lmlx -L/usr/X11/lib -lXext -lX11 -framework Metal -framework Metalkit
+	GFLAGS			= -L$(GPATH) -lmlx -framework OpenGL -framework AppKit
+	GPATH				= ./minilibx_opengl
+	MLX_PATH		= $(GPATH)/libmlx.a
 else
-	GFLAGS			= -lXest -lX11 -lm -lbsd
-	GPATH				= ./mlx-linux
+	GFLAGS			= -L$(GPATH) -lmlx -lXest -lX11 -lm -lbsd
+	GPATH				= ./minilibx-linux
 	MLX_PATH		= $(GPATH)/libmlx.a
 endif
 
