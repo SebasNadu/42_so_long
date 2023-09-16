@@ -6,7 +6,7 @@
 #    By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 18:41:02 by sebasnadu         #+#    #+#              #
-#    Updated: 2023/09/14 17:50:02 by sebasnadu        ###   ########.fr        #
+#    Updated: 2023/09/16 19:17:18 by sebasnadu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,6 @@ LIBFT_DIR 		= ./LIBFT
 LIBFT_PATH		= $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS 	= -L $(LIBFT_DIR) -lft
 
-# INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I/opt/X11/include -I$(GPATH)
-INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I$(GPATH)
 CC 						= cc
 RM 						= rm -rf
 PRINTF				= printf
@@ -50,14 +48,21 @@ OBJ_SUB_DIRS	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC_SUB_DIRS))
 OBJ						= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC:.c=.o))
 
 ifeq ($(UNAME), Darwin)
+	GFLAGS			= -L$(GPATH) -lmlx -framework OpenGL -framework AppKit -lz
 	# GFLAGS			= -L$(GPATH) -lmlx -L/usr/X11/lib -lXext -lX11 -framework Metal -framework Metalkit
-	GFLAGS			= -L$(GPATH) -lmlx -framework OpenGL -framework AppKit
 	GPATH				= ./minilibx_opengl
+	# GPATH				= ./minilibx_linux
 	MLX_PATH		= $(GPATH)/libmlx.a
+	INCLUDES		= -I./includes -I$(LIBFT_DIR)/includes -I$(GPATH)
+	# INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I/opt/X11/include -I$(GPATH)
+	LIBS				= -L$(LIBFT_DIR) -lft
 else
-	GFLAGS			= -L$(GPATH) -lmlx -lXest -lX11 -lm -lbsd
-	GPATH				= ./minilibx-linux
+	# GFLAGS			= -I$(GPATH) -L$(GPATH) -l$(GPATH) -lXest -lX11 -lext -lm -lbsd
+	GFLAGS			= -I$(GPATH) -L$(GPATH) -l$(GPATH) -lXest -lX11 -lm -lz
+	GPATH				= ./minilibx_linux
 	MLX_PATH		= $(GPATH)/libmlx.a
+	INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I/usr/lib
+	LIBS				= -L$(LIBFT_DIR) -lft -L/usr/lib
 endif
 
 # progress bar
@@ -68,10 +73,10 @@ endif
 SRC_COUNT := 0
 SRC_PCT = $(shell expr 100 \* $(SRC_COUNT) / $(SRC_COUNT_TOT))
 
-all : _libft _mlx $(NAME)
+all : $(NAME)
 
-$(NAME) : $(OBJ) $(LIBFT) $(MLX_PATH)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_PATH) $(MLX_PATH) $(GFLAGS) -o $@
+$(NAME) : $(OBJ) _libft _mlx
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(GFLAGS) -o $@
 	@$(PRINTF) "\r%100s\r$(GREEN)$(NAME) is up to date!$(DEFAULT)\n"
 
 $(OBJ_SUB_DIRS)/%.o : $(SRC_SUB_DIRS)/%.c
