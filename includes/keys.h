@@ -6,16 +6,16 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 18:52:13 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/18 18:32:26 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/20 17:22:04 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef KEYS_H
 # define KEYS_H
 
-# define X_EVENT_KEY_PRESS		2
-# define X_EVENT_KEY_RELEASE	3
-# define X_EVENT_KEY_EXIT		17
+# define X_EVENT_KEYPRESS		2
+# define X_EVENT_KEYRELEASE		3
+# define X_EVENT_DESTROY		17
 
 # ifdef __linux__
 #  define KEY_CTRL				65507
