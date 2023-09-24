@@ -1,12 +1,12 @@
-/*                                                                            */
 /* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/15 11:27:59 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/22 14:26:57 by sebasnadu        ###   ########.fr       */
+/*   Created: 2023/09/23 14:25:23 by sebasnadu         #+#    #+#             */
+/*   Updated: 2023/09/24 21:37:32 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include "../libft/includes/libft.h"
 
 # define WIN_TITLE "so_Long"
-# define WIN_WIDTH 1366
+# define WIN_WIDTH 1360
 # define WIN_HEIGHT 768
 # define HUD_LM 920
 # define LIFE_NUM 7
@@ -44,27 +44,43 @@
 
 enum e_so_long_err
 {
-	INV_ARGS = 1,
-	INV_MAP = 2,
-	INV_MAP_FORM = 3,
-	INV_SPRITE = 4,
+	inv_args,
+	inv_map,
+	inv_map_form,
+	inv_sprite,
 };
 
-enum e_sprites
-{
-	LUKE = 0,
-	STORM = 1,
-	STRUC = 2,
-	COIN = 3,
-	GATE = 4,
-	HEART = 5,
-};
-
-typedef enum e_direction
+enum e_direction
 {
 	left,
 	right
-}				t_direction;
+};
+
+typedef enum e_sprite_t
+{
+	luke_t,
+	storm_t,
+	coin_t,
+	gate_t,
+	misc_t,
+	bg_t,
+}			t_sprite_t;
+
+typedef enum e_sprite_n
+{
+	luke_n = 188,
+	storm_n = 27,
+	coin_n = 4,
+	gate_n = 3,
+	misc_n = 7,
+	bg_n = 12,
+}		t_sprite_n;
+
+typedef enum e_bool
+{
+	false,
+	true
+}				t_bool;
 
 typedef struct s_vtr2D
 {
@@ -96,8 +112,8 @@ typedef struct s_enemy
 	t_vtr2D	t_r;
 	t_vtr2D	b_l;
 	t_vtr2D	b_r;
-	int		is_alive;
-	int		is_moving;
+	t_bool	is_alive;
+	t_bool	is_moving;
 	int		attack_state;
 	int		death_state;
 	int		direction;
@@ -115,26 +131,60 @@ typedef struct s_sprites
 	void	*gate[3];
 	void	*heart[2];
 	void	*struc[5];
+	void	*bg[12];
 }				t_sprites;
 
 typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
-	t_vtr2D		global_size;
+	t_vtr2D		g_len;
 	int			map_fd;
 	t_list		*lst_map;
 	char		**map;
 	t_sprites	sprites;
-	long long	timestamp;
+	long long	updated_at;
 	int			fps;
-	t_vtr2D		player_offset;
-	t_vtr2D		global_offset;
+	t_vtr2D		p_offset;
+	t_vtr2D		g_offset;
 	int			c_num;
 	int			mvts_num;
 	t_player	*player;
 	t_list		*enemies;
-	int			debug;
+	t_bool		debug;
 }				t_game;
+
+// init_0.c
+void	init_game(char *argv[], t_game *game);
+void	init_map(int argc, char *argv[], t_game *game);
+void	init_sprites(t_game *game);
+void	init_player(t_game *game);
+void	init_camera(t_game *game);
+// init_1.c
+void	init_enemies(t_game *game);
+void	init_hooks(t_game *game);
+// error.c
+void	sl_error(t_game *game, int err);
+void	free_game(t_game *game);
+// parse_0.c
+t_bool	check_args(int argc, char *argv[]);
+t_bool	open_map(char *relative_path, t_game *game);
+t_bool	read_map(t_game *game);
+t_bool	set_map(t_game *game);
+t_bool	check_map_len(t_game *game);
+// parse_1.c
+t_bool	check_map_chars(t_game *game);
+t_bool	check_map_walls(t_game *game);
+t_bool	check_map_requisites(t_game *game);
+// load.c
+void	load_sprite(char *s_name, int s_n, t_sprite_t s_t, t_game *game);
+// hooks.c
+int		keyup_hook(int keycode, t_game *game);
+int		keydown_hook(int keycode, t_game *game);
+int		close_hook(int keycode, t_game *game);
+// actions.c
+void	unset_action(int keycode, t_game *game);
+void	set_action(int keycode, t_game *game);
+int		get_action_keycode(int keycode);
 
 #endif

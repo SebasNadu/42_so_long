@@ -6,470 +6,11 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:18:26 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/22 14:44:32 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/24 21:28:50 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/so_long.h"
-
-void	init_strc_game(char *argv[], t_game *game)
-{
-	(void)argv;
-	game->mlx = mlx_init();
-	game->timestamp = 0;
-	game->global_size.x = -1;
-	game->global_size.y = -1;
-	game->player = ft_calloc(1, sizeof(t_player));
-	if (!game->player)
-		exit(EXIT_FAILURE);
-	game->player->jump_state = 0;
-	game->win = mlx_new_window(game->mlx, WIN_WIDTH, WIN_HEIGHT, WIN_TITLE);
-	game->player_offset.x = 0;
-	game->player_offset.y = 0;
-	game->mvts_num = 0;
-	game->lst_map = NULL;
-	game->enemies = NULL;
-	if (argv[2] && ft_strncmp(argv[2], "DEBUG=1", 7) == 0)
-		game->debug = 1;
-	else
-		game->debug = 0;
-}
-
-void	sl_error(t_game *game, int err)
-{
-	(void)game;
-	if (err == INV_ARGS)
-		ft_printf_fd(2, "Error: You must indicate only one map path!\n");
-	if (err == INV_MAP)
-		ft_printf_fd(2, "Error: Unable to open the map!\n");
-	if (err == INV_MAP_FORM)
-		ft_printf_fd(2, "Error: The map is not in a valid format!\n");
-	if (err == INV_SPRITE)
-		ft_printf_fd(2, "Error: Unable to open the sprite!\n");
-	exit(EXIT_FAILURE);
-}
-
-int	open_map(char *relative_path, t_game *game)
-{
-	int	path_len;
-
-	path_len = ft_strlen(relative_path);
-	if (path_len < 4)
-		return (0);
-	if (ft_strncmp(&relative_path[path_len - 4], ".ber", 4) != 0)
-		return (0);
-	game->map_fd = open(relative_path, O_RDONLY);
-	if (game->map_fd < 0)
-		return (0);
-	return (1);
-}
-
-int	read_map(t_game *game)
-{
-	char	*line;
-	int		line_size;
-
-	line = "";
-	while (line)
-	{
-		line = get_next_line(game->map_fd);
-		if (!line)
-		{
-			if (game->global_size.x == -1)
-				return (0);
-			return (1);
-		}
-		line_size = ft_strlen(line);
-		line[line_size - 1] = '\0';
-		if (game->global_size.x == -1)
-			game->global_size.x = ft_strlen(line);
-		if (game->lst_map == NULL)
-			game->lst_map = ft_lstnew(line);
-		else
-			ft_lstadd_back(&game->lst_map, ft_lstnew(line));
-	}
-	return (1);
-}
-
-int	set_map(t_game *game)
-{
-	t_list	*lst;
-	int		i;
-
-	game->global_size.y = ft_lstsize(game->lst_map);
-	if (game->global_size.y < 3)
-		return (0);
-	game->map = ft_calloc(game->global_size.y + 1, sizeof(char *));
-	if (!game->map)
-		return (0);
-	lst = game->lst_map;
-	i = 0;
-	while (lst)
-	{
-		game->map[i] = ft_strdup(lst->content);
-		if (!game->map[i])
-			return (0);
-		i++;
-		lst = lst->next;
-	}
-	game->global_size.x = ft_strlen(game->map[0]);
-	if (game->global_size.x < 4)
-		return (0);
-	return (1);
-}
-
-int	check_map(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	while (game->map[i])
-	{
-		if (i > game->global_size.y)
-			return (0);
-		if ((int)ft_strlen(game->map[i]) != game->global_size.x)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	check_map_chars(t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (game->map[i])
-	{
-		j = 0;
-		while (game->map[i][j])
-		{
-			if (game->map[i][j] != '1' && game->map[i][j] != '0'
-				&& game->map[i][j] != 'C' && game->map[i][j] != 'E'
-				&& game->map[i][j] != 'P' && game->map[i][j] != 'M'
-				&& game->map[i][j] != '*')
-				return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
-int	check_map_walls(t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (game->map[i])
-	{
-		j = 0;
-		while (game->map[i][j] && i < game->global_size.y
-			&& j < game->global_size.x)
-		{
-			if (i == 0 || i + 1 == game->global_size.y)
-				if (game->map[i][j] != '1')
-					return (0);
-			if (j == 0 || j + 1 == game->global_size.x)
-				if (game->map[i][j] != '1')
-					return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
-int	check_map_requisites(t_game *game)
-{
-	int	i;
-	int	j;
-	int	elements[3];
-
-	i = 0;
-	ft_memset(elements, 0, sizeof(elements));
-	while (game->map[i])
-	{
-		j = 0;
-		while (game->map[i][j])
-		{
-			if (game->map[i][j] == 'C')
-				elements[0]++;
-			else if (game->map[i][j] == 'P')
-				elements[1]++;
-			else if (game->map[i][j] == 'E')
-				elements[2]++;
-			j++;
-		}
-		i++;
-	}
-	if (elements[0] < 1 || elements[1] != 1 || elements[2] != 1)
-		return (0);
-	game->c_num = elements[0];
-	return (1);
-}
-
-int	init_map(int argc, char *argv[], t_game *game)
-{
-	(void)argc;
-	if (!open_map(argv[1], game))
-		sl_error(game, 2);
-	if (!read_map(game))
-		sl_error(game, 3);
-	if (!set_map(game))
-		sl_error(game, 3);
-	if (!check_map(game))
-		sl_error(game, 3);
-	if (!check_map_chars(game))
-		sl_error(game, 3);
-	if (!check_map_walls(game))
-		sl_error(game, 3);
-	if (!check_map_requisites(game))
-		sl_error(game, 3);
-	return (1);
-}
-
-char	*sprite_path(char *s_name, int n)
-{
-	char	*nbr;
-	char	*str1;
-	char	*str2;
-
-	nbr = ft_itoa(n);
-	str1 = ft_strjoin("./assets/", s_name);
-	str2 = ft_strjoin(str1, "/");
-	free(str1);
-	str1 = ft_strjoin(str2, s_name);
-	free(str2);
-	str2 = ft_strjoin(str1, "_");
-	free(str1);
-	str1 = ft_strjoin(str2, nbr);
-	free(str2);
-	str2 = ft_strjoin(str1, ".xpm");
-	free(str1);
-	free(nbr);
-	return (str2);
-}
-
-void	load_sprite_type(int i, char *path, int s_type, t_game *game)
-{
-	int		d;
-
-	if (s_type == LUKE)
-		game->sprites.luke[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
-	else if (s_type == STORM)
-		game->sprites.strom[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
-	else if (s_type == COIN)
-		game->sprites.coin[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
-	else if (s_type == GATE)
-		game->sprites.gate[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
-	else if (s_type == HEART)
-		game->sprites.heart[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
-	else if (s_type == STRUC)
-		game->sprites.struc[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
-}
-
-void	load_sprite(char *s_name, int s_num, int s_type, t_game *game)
-{
-	int		i;
-	int		fd;
-	char	*path;
-
-	i = -1;
-	while (++i < s_num)
-	{
-		path = sprite_path(s_name, i);
-		fd = open(path, O_RDONLY);
-		if (fd < 0)
-			sl_error(game, 4);
-		close(fd);
-		load_sprite_type(i, path, s_type, game);
-		free(path);
-	}
-}
-
-void	init_sprites(t_game *game)
-{
-	load_sprite("luke", 188, LUKE, game);
-	load_sprite("storm", 27, STORM, game);
-	load_sprite("coin", 4, COIN, game);
-	load_sprite("gate", 3, GATE, game);
-	load_sprite("heart", 2, HEART, game);
-	load_sprite("struc", 5, STRUC, game);
-}
-
-void	init_player(t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	game->player->life_state = 50;
-	game->player->life_num = LIFE_NUM;
-	game->player->direction = right;
-	while (game->map[i])
-	{
-		j = 0;
-		while (game->map[i][j])
-		{
-			if (game->map[i][j] == 'P')
-			{
-				game->player->pos.x = j * BPX;
-				game->player->pos.y = i * BPX - 1;
-				return ;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-void	init_camera(t_game *game)
-{
-	game->global_offset.x = 0;
-	game->global_offset.y = 0;
-	if (game->global_size.x < 15)
-		game->global_offset.x = (14 - game->global_size.x) / 2 * BPX + 30;
-	if (game->global_size.y < 8)
-		game->global_offset.y = (7 - game->global_size.y) / 2 * BPX + 35;
-}
-
-void	create_enemy(int i, int j, t_game *game)
-{
-	t_enemy	*enemy;
-
-	enemy = ft_calloc(1, sizeof(t_enemy));
-	if (!enemy)
-		exit(EXIT_FAILURE);
-	enemy->pos.x = j * BPX;
-	enemy->pos.y = i * BPX - 1;
-	enemy->init_pos.x = enemy->pos.x;
-	enemy->init_pos.y = enemy->pos.y;
-	enemy->is_alive = 1;
-	enemy->is_moving = 1;
-	enemy->direction = left;
-	enemy->anim_intv = 0;
-	enemy->death_state = 0;
-	if (game->enemies == NULL)
-		game->enemies = ft_lstnew(enemy);
-	else
-		ft_lstadd_back(&game->enemies, ft_lstnew(enemy));
-}
-
-void	init_enemies(t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < game->global_size.y)
-	{
-		j = 0;
-		while (j < game->global_size.x)
-		{
-			if (game->map[i][j] == 'M')
-				create_enemy(i, j, game);
-			j++;
-		}
-		i++;
-	}
-}
-
-int	get_action_keycode(int keycode)
-{
-	if (keycode == KEY_A || keycode == KEY_LEFT)
-		return (1);
-	else if (keycode == KEY_D || keycode == KEY_RIGHT)
-		return (2);
-	else if (keycode == KEY_W || keycode == KEY_UP)
-		return (3);
-	else if (keycode == KEY_S || keycode == KEY_DOWN)
-		return (4);
-	else if (keycode == KEY_SPACE)
-		return (5);
-	return (0);
-}
-
-void	set_action(int keycode, t_game *game)
-{
-	t_player	*player;
-
-	player = game->player;
-	if (get_action_keycode(keycode) != 5)
-	{
-		if (player->ac[0] == 0 || player->ac[0]
-			== get_action_keycode(keycode))
-			player->ac[0] = get_action_keycode(keycode);
-		else if (player->ac[1] == 0 || player->ac[1]
-			== get_action_keycode(keycode))
-			player->ac[1] = get_action_keycode(keycode);
-	}
-	else
-		player->ac[2] = get_action_keycode(keycode);
-	if (player->ac[0] == 1 || player->ac[1] == 1)
-		player->direction = left;
-	else if (player->ac[0] == 2 || player->ac[1] == 2)
-		player->direction = right;
-}
-
-void	unset_action(int keycode, t_game *game)
-{
-	t_player	*player;
-
-	player = game->player;
-	if (player->ac[0] == get_action_keycode(keycode))
-		player->ac[0] = 0;
-	if (player->ac[1] == get_action_keycode(keycode))
-		player->ac[1] = 0;
-	if (player->ac[0] == 0 && player->ac[1] != 0)
-	{
-		player->ac[0] = player->ac[1];
-		player->ac[1] = 0;
-	}
-	if (player->ac[2] == get_action_keycode(keycode))
-		player->ac[2] = 0;
-}
-
-int	close_hook(int keycode, t_game *game)
-{
-	if (keycode == 0)
-		mlx_destroy_window(game->mlx, game->win);
-	exit(EXIT_SUCCESS);
-	return (0);
-}
-
-int	keydown_hook(int keycode, t_game *game)
-{
-	set_action(keycode, game);
-	return (0);
-}
-
-int	keyup_hook(int keycode, t_game *game)
-{
-	if (keycode != KEY_ESC)
-		unset_action(keycode, game);
-	else
-		close_hook(0, game);
-	return (0);
-}
-
-void	hooks_register(t_game *game)
-{
-	if (ft_strncmp(OS, "linux", 5) == 0)
-	{
-		mlx_hook(game->win, X_EVENT_DESTROY, 1L << 0, close_hook, game);
-		mlx_hook(game->win, X_EVENT_KEYPRESS, 1L << 0, keydown_hook, game);
-		mlx_hook(game->win, X_EVENT_KEYRELEASE, 1L << 1, keyup_hook, game);
-	}
-	else if (ft_strncmp(OS, "macos", 5) == 0)
-	{
-		mlx_hook(game->win, X_EVENT_DESTROY, 1L << 17, close_hook, game);
-		mlx_hook(game->win, X_EVENT_KEYPRESS, 0L, keydown_hook, game);
-		mlx_key_hook(game->win, keyup_hook, game);
-	}
-}
 
 long long	get_millitimestamp(void)
 {
@@ -484,10 +25,10 @@ void	fps(t_game *game)
 	long long	now;
 
 	now = get_millitimestamp();
-	if (now - game->timestamp > 15)
+	if (now - game->updated_at > 15)
 	{
-		game->fps = 960 / (now - game->timestamp);
-		game->timestamp = now;
+		game->fps = 960 / (now - game->updated_at);
+		game->updated_at = now;
 	}
 }
 
@@ -512,7 +53,7 @@ void	draw_block(int x, int y, void *sprite, t_game *game)
 		|| x > WIN_WIDTH || y > WIN_HEIGHT)
 		return ;
 	mlx_put_image_to_window(game->mlx, game->win, sprite,
-		x + game->global_offset.x, y + game->global_offset.y);
+		x + game->g_offset.x, y + game->g_offset.y);
 }
 
 void	structure(t_game *game)
@@ -521,19 +62,19 @@ void	structure(t_game *game)
 	int	j;
 
 	i = 0;
-	while (i < game->global_size.y)
+	while (i < game->g_len.y)
 	{
 		j = 0;
-		while (j < game->global_size.x)
+		while (j < game->g_len.x)
 		{
 			if (game->map[i][j] == '1' && i != 0 && j != 0
-				&& i != game->global_size.y - 1 && j != game->global_size.x - 1)
-				draw_block(j * BPX + game->player_offset.x,
-					i * BPX + game->player_offset.y,
+				&& i != game->g_len.y - 1 && j != game->g_len.x - 1)
+				draw_block(j * BPX + game->p_offset.x,
+					i * BPX + game->p_offset.y,
 					game->sprites.struc[0], game);
 			else if (game->map[i][j] == '*')
-				draw_block(j * BPX + game->player_offset.x,
-					i * BPX + game->player_offset.y,
+				draw_block(j * BPX + game->p_offset.x,
+					i * BPX + game->p_offset.y,
 					game->sprites.struc[1], game);
 			j++;
 		}
@@ -597,14 +138,14 @@ void	draw_item(t_game *game)
 	int	j;
 
 	i = 0;
-	while (i < game->global_size.y)
+	while (i < game->g_len.y)
 	{
 		j = 0;
-		while (j < game->global_size.x)
+		while (j < game->g_len.x)
 		{
 			if (game->map[i][j] == 'C')
-				draw_block(j * BPX + game->player_offset.x,
-					i * BPX + game->player_offset.y,
+				draw_block(j * BPX + game->p_offset.x,
+					i * BPX + game->p_offset.y,
 					get_item_sprite(game), game);
 			j++;
 		}
@@ -650,14 +191,14 @@ void	draw_gate(t_game *game)
 	int	j;
 
 	i = 0;
-	while (i < game->global_size.y)
+	while (i < game->g_len.y)
 	{
 		j = 0;
-		while (j < game->global_size.x)
+		while (j < game->g_len.x)
 		{
 			if (game->map[i][j] == 'E')
-				draw_block(j * BPX + game->player_offset.x,
-					i * BPX + game->player_offset.y, get_gate_sprite(game),
+				draw_block(j * BPX + game->p_offset.x,
+					i * BPX + game->p_offset.y, get_gate_sprite(game),
 					game);
 			j++;
 		}
@@ -774,8 +315,8 @@ void	draw_enemy(t_game *game)
 	{
 		e = (t_enemy *)lst->content;
 		if (e->is_alive == 1 || e->death_state > 0)
-			draw_block(e->pos.x + game->player_offset.x,
-				e->pos.y + game->player_offset.y, get_enemy_sprite(e, game),
+			draw_block(e->pos.x + game->p_offset.x,
+				e->pos.y + game->p_offset.y, get_enemy_sprite(e, game),
 				game);
 		lst = lst->next;
 	}
@@ -1410,23 +951,23 @@ void	player_draw(t_game *game)
 	t_player	*p;
 
 	p = game->player;
-	screen_pp[1] = p->pos.y + game->player_offset.y;
-	screen_pp[0] = p->pos.x + game->player_offset.x;
+	screen_pp[1] = p->pos.y + game->p_offset.y;
+	screen_pp[0] = p->pos.x + game->p_offset.x;
 	if (p->pos.y < (64 * 2))
-		game->player_offset.y = 0;
+		game->p_offset.y = 0;
 	else if (screen_pp[1] > (512 + 48))
-		game->player_offset.y = -p->pos.y + (64 * 8) + 48;
+		game->p_offset.y = -p->pos.y + (64 * 8) + 48;
 	else if (screen_pp[1] < 128)
-		game->player_offset.y = -p->pos.y + (64 * 2);
+		game->p_offset.y = -p->pos.y + (64 * 2);
 	if (p->pos.x < (64 * 2))
-		game->player_offset.x = 0;
+		game->p_offset.x = 0;
 	else if (screen_pp[0] > (1088 + 76))
-		game->player_offset.x = -p->pos.x + (64 * 17) + 76;
+		game->p_offset.x = -p->pos.x + (64 * 17) + 76;
 	else if (screen_pp[0] < 128)
-		game->player_offset.x = -p->pos.x + (64 * 2);
+		game->p_offset.x = -p->pos.x + (64 * 2);
 	mlx_put_image_to_window(game->mlx, game->win, get_player_sprite(game),
-		p->pos.x + game->player_offset.x + game->global_offset.x,
-		p->pos.y + game->player_offset.y + game->global_offset.y);
+		p->pos.x + game->p_offset.x + game->g_offset.x,
+		p->pos.y + game->p_offset.y + game->g_offset.y);
 }
 
 void	player(t_game *game)
@@ -1542,7 +1083,7 @@ int	render_next_frame(t_game *game)
 	long long	diff;
 
 	now = get_millitimestamp();
-	diff = now - game->timestamp;
+	diff = now - game->updated_at;
 	if (diff > 15)
 	{
 		fps(game);
@@ -1566,14 +1107,14 @@ int	main(int argc, char **argv)
 	t_game	game;
 
 	if (argc > 3)
-		sl_error(&game, 1);
-	init_strc_game(argv, &game);
+		sl_error(&game, inv_args);
+	init_game(argv, &game);
 	init_map(argc, argv, &game);
 	init_sprites(&game);
 	init_player(&game);
 	init_camera(&game);
 	init_enemies(&game);
-	hooks_register(&game);
+	init_hooks(&game);
 	mlx_loop_hook(game.mlx, render_next_frame, &game);
 	mlx_loop(game.mlx);
 	exit(EXIT_SUCCESS);
