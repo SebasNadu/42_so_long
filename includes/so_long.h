@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 14:25:23 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/24 21:37:32 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/25 20:15:03 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ typedef enum e_sprite_n
 	storm_n = 27,
 	coin_n = 4,
 	gate_n = 3,
-	misc_n = 7,
-	bg_n = 12,
+	misc_n = 12,
+	bg_n = 10,
 }		t_sprite_n;
 
 typedef enum e_bool
@@ -129,9 +129,8 @@ typedef struct s_sprites
 	void	*strom[27];
 	void	*coin[4];
 	void	*gate[3];
-	void	*heart[2];
-	void	*struc[5];
-	void	*bg[12];
+	void	*misc[12];
+	void	*bg[10];
 }				t_sprites;
 
 typedef struct s_game
@@ -155,36 +154,46 @@ typedef struct s_game
 }				t_game;
 
 // init_0.c
-void	init_game(char *argv[], t_game *game);
-void	init_map(int argc, char *argv[], t_game *game);
-void	init_sprites(t_game *game);
-void	init_player(t_game *game);
-void	init_camera(t_game *game);
+void		init_game(char *argv[], t_game *game);
+void		init_map(int argc, char *argv[], t_game *game);
+void		init_sprites(t_game *game);
+void		init_player(t_game *game);
+void		init_camera(t_game *game);
 // init_1.c
-void	init_enemies(t_game *game);
-void	init_hooks(t_game *game);
+void		init_enemies(t_game *game);
+void		init_hooks(t_game *game);
 // error.c
-void	sl_error(t_game *game, int err);
-void	free_game(t_game *game);
+void		sl_error(t_game *game, int err);
+void		free_game(t_game *game);
 // parse_0.c
-t_bool	check_args(int argc, char *argv[]);
-t_bool	open_map(char *relative_path, t_game *game);
-t_bool	read_map(t_game *game);
-t_bool	set_map(t_game *game);
-t_bool	check_map_len(t_game *game);
+t_bool		check_args(int argc, char *argv[]);
+t_bool		open_map(char *relative_path, t_game *game);
+t_bool		read_map(t_game *game);
+t_bool		set_map(t_game *game);
+t_bool		check_map_len(t_game *game);
 // parse_1.c
-t_bool	check_map_chars(t_game *game);
-t_bool	check_map_walls(t_game *game);
-t_bool	check_map_requisites(t_game *game);
+t_bool		check_map_chars(t_game *game);
+t_bool		check_map_walls(t_game *game);
+t_bool		check_map_requisites(t_game *game);
 // load.c
-void	load_sprite(char *s_name, int s_n, t_sprite_t s_t, t_game *game);
+void		load_sprite(char *s_name, int s_n, t_sprite_t s_t, t_game *game);
 // hooks.c
-int		keyup_hook(int keycode, t_game *game);
-int		keydown_hook(int keycode, t_game *game);
-int		close_hook(int keycode, t_game *game);
+int			keyup_hook(int keycode, t_game *game);
+int			keydown_hook(int keycode, t_game *game);
+int			close_hook(int keycode, t_game *game);
 // actions.c
-void	unset_action(int keycode, t_game *game);
-void	set_action(int keycode, t_game *game);
-int		get_action_keycode(int keycode);
+void		unset_action(int keycode, t_game *game);
+void		set_action(int keycode, t_game *game);
+int			get_action_keycode(int keycode);
+// utils.c
+long long	get_millitimestamp(void);
+void		fps(t_game *game);
+// player.c
+void		player_position(t_game *game);
+// structure.c
+void		structure(t_game *game);
+// draw.c
+void		draw_block(int x, int y, void *sprite, t_game *game);
+void		background(t_game *game);
 
 #endif

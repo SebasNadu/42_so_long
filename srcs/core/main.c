@@ -6,81 +6,11 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:18:26 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/24 21:28:50 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/25 17:39:28 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/so_long.h"
-
-long long	get_millitimestamp(void)
-{
-	struct timeval	time_val;
-
-	gettimeofday(&time_val, NULL);
-	return (time_val.tv_sec * 1000LL + time_val.tv_usec / 1000);
-}
-
-void	fps(t_game *game)
-{
-	long long	now;
-
-	now = get_millitimestamp();
-	if (now - game->updated_at > 15)
-	{
-		game->fps = 960 / (now - game->updated_at);
-		game->updated_at = now;
-	}
-}
-
-void	player_position(t_game *game)
-{
-	t_player	*player;
-
-	player = game->player;
-	player->t_l.x = player->pos.x;
-	player->t_l.y = player->pos.y;
-	player->t_r.x = player->t_l.x;
-	player->t_r.y = player->t_l.y + BPX;
-	player->b_l.x = player->t_l.x + BPX;
-	player->b_l.y = player->t_l.y;
-	player->b_r.x = player->t_l.x + BPX;
-	player->b_r.y = player->t_l.y + BPX;
-}
-
-void	draw_block(int x, int y, void *sprite, t_game *game)
-{
-	if (x < -BPX || y < -BPX
-		|| x > WIN_WIDTH || y > WIN_HEIGHT)
-		return ;
-	mlx_put_image_to_window(game->mlx, game->win, sprite,
-		x + game->g_offset.x, y + game->g_offset.y);
-}
-
-void	structure(t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < game->g_len.y)
-	{
-		j = 0;
-		while (j < game->g_len.x)
-		{
-			if (game->map[i][j] == '1' && i != 0 && j != 0
-				&& i != game->g_len.y - 1 && j != game->g_len.x - 1)
-				draw_block(j * BPX + game->p_offset.x,
-					i * BPX + game->p_offset.y,
-					game->sprites.struc[0], game);
-			else if (game->map[i][j] == '*')
-				draw_block(j * BPX + game->p_offset.x,
-					i * BPX + game->p_offset.y,
-					game->sprites.struc[1], game);
-			j++;
-		}
-		i++;
-	}
-}
 
 void	item_action(t_game *game)
 {
@@ -122,7 +52,7 @@ int	*get_item_sprite(t_game *game)
 	if (anim_intv >= game->c_num * 5)
 	{
 		anim_intv = 0;
-		if (position < 4)
+		if (position < 3)
 			position++;
 		else
 			position = 0;
@@ -990,13 +920,13 @@ void	show_lifes(t_game *game)
 	i = 0;
 	while (i < game->player->life_num)
 	{
-		mlx_put_image_to_window(game->mlx, game->win, game->sprites.heart[0],
+		mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[9],
 			HUD_LM + 167 + (i * 35), 10);
 		i++;
 	}
 	while (i < LIFE_NUM)
 	{
-		mlx_put_image_to_window(game->mlx, game->win, game->sprites.heart[1],
+		mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[10],
 			HUD_LM + 167 + (i * 35), 10);
 		i++;
 	}
@@ -1006,7 +936,7 @@ void	show_movements(t_game *game)
 {
 	char	*num_movements;
 
-	mlx_put_image_to_window(game->mlx, game->win, game->sprites.struc[4],
+	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[8],
 		HUD_LM + 20, 17);
 	num_movements = ft_itoa(game->mvts_num);
 	mlx_string_put(game->mlx, game->win, HUD_LM + 60, 35, 0xFFFFFF,
@@ -1016,7 +946,7 @@ void	show_movements(t_game *game)
 
 void	show_hud(t_game *game)
 {
-	mlx_put_image_to_window(game->mlx, game->win, game->sprites.struc[3],
+	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[7],
 		HUD_LM + 10, 10);
 	show_movements(game);
 	show_lifes(game);
@@ -1071,7 +1001,7 @@ void	show_action(t_game *game)
 
 void	show_debug(t_game *game)
 {
-	mlx_put_image_to_window(game->mlx, game->win, game->sprites.struc[2],
+	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[6],
 		10, 10);
 	show_fps(game);
 	show_action(game);
@@ -1089,7 +1019,7 @@ int	render_next_frame(t_game *game)
 		fps(game);
 		mlx_clear_window(game->mlx, game->win);
 		player_position(game);
-		// background(game);
+		background(game);
 		structure(game);
 		item(game);
 		gate(game);

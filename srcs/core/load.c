@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 17:06:09 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/24 19:56:14 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/25 11:09:08 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	load_sprite_type(int i, char *path, t_sprite_t s_t, t_game *game)
 	else if (s_t == gate_t)
 		game->sprites.gate[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
 	else if (s_t == misc_t)
-		game->sprites.heart[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
+		game->sprites.misc[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
 	else if (s_t == bg_t)
 		game->sprites.bg[i] = mlx_xpm_file_to_image(game->mlx, path, &d, &d);
 }
@@ -64,7 +64,7 @@ void	load_sprite(char *s_name, int s_n, t_sprite_t s_t, t_game *game)
 		path = sprite_path(s_name, i);
 		fd = open(path, O_RDONLY);
 		if (fd < 0)
-			sl_error(game, 4);
+			sl_error(game, inv_sprite);
 		close(fd);
 		load_sprite_type(i, path, s_t, game);
 		free(path);
