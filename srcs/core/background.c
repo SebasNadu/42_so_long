@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:36:49 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/25 23:44:47 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/25 23:54:00 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	background(t_game *game)
 	{
 		x_offset = (((j * BPX) - (game->player->pos.x)) / (j * 4));
 		draw_block_bg(x_offset - BPX, y_offset, game->sprites.bg[i], game);
-		draw_block_bg((8 * BPX) + x_offset, y_offset, game->sprites.bg[i], game);
+		draw_block_bg((12 * BPX) + x_offset, y_offset, game->sprites.bg[i], game);
 		j++;
 	}
 }
