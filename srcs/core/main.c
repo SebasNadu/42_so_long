@@ -6,88 +6,11 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:18:26 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/25 17:39:28 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/27 20:43:45 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/so_long.h"
-
-void	item_action(t_game *game)
-{
-	game->c_num--;
-}
-
-void	item_collision(t_game *game)
-{
-	t_player	*p;
-
-	p = game->player;
-	if (game->map[(p->t_l.y + HPX) / BPX][(p->t_l.x + HPX) / BPX] == 'C')
-	{
-		game->map[(p->t_l.y + HPX) / BPX][(p->t_l.x + HPX) / BPX] = '0';
-		item_action(game);
-	}
-	else if (game->map[(p->t_r.y - HPX) / BPX][(p->t_r.x + HPX) / BPX] == 'C')
-	{
-		game->map[(p->t_r.y + HPX) / BPX][(p->t_r.x + HPX) / BPX] = '0';
-		item_action(game);
-	}
-	else if (game->map[(p->t_l.y + HPX) / BPX][(p->b_l.x - HPX) / BPX] == 'C')
-	{
-		game->map[(p->t_l.y + HPX) / BPX][(p->b_l.x - HPX) / BPX] = '0';
-		item_action(game);
-	}
-	else if (game->map[(p->b_r.y - HPX) / BPX][(p->b_l.x - HPX) / BPX] == 'C')
-	{
-		game->map[(p->b_r.y - HPX) / BPX][(p->b_r.x - HPX) / BPX] = '0';
-		item_action(game);
-	}
-}
-
-int	*get_item_sprite(t_game *game)
-{
-	static int	position;
-	static int	anim_intv;
-
-	if (anim_intv >= game->c_num * 5)
-	{
-		anim_intv = 0;
-		if (position < 3)
-			position++;
-		else
-			position = 0;
-	}
-	else
-		anim_intv++;
-	return (game->sprites.coin[position]);
-}
-
-void	draw_item(t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < game->g_len.y)
-	{
-		j = 0;
-		while (j < game->g_len.x)
-		{
-			if (game->map[i][j] == 'C')
-				draw_block(j * BPX + game->p_offset.x,
-					i * BPX + game->p_offset.y,
-					get_item_sprite(game), game);
-			j++;
-		}
-		i++;
-	}
-}
-
-void	item(t_game *game)
-{
-	draw_item(game);
-	item_collision(game);
-}
 
 void	gate_action(t_game *game)
 {
@@ -920,13 +843,13 @@ void	show_lifes(t_game *game)
 	i = 0;
 	while (i < game->player->life_num)
 	{
-		mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[9],
+		mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[7],
 			HUD_LM + 167 + (i * 35), 10);
 		i++;
 	}
 	while (i < LIFE_NUM)
 	{
-		mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[10],
+		mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[8],
 			HUD_LM + 167 + (i * 35), 10);
 		i++;
 	}
@@ -936,7 +859,7 @@ void	show_movements(t_game *game)
 {
 	char	*num_movements;
 
-	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[8],
+	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[6],
 		HUD_LM + 20, 17);
 	num_movements = ft_itoa(game->mvts_num);
 	mlx_string_put(game->mlx, game->win, HUD_LM + 60, 35, 0xFFFFFF,
@@ -946,7 +869,7 @@ void	show_movements(t_game *game)
 
 void	show_hud(t_game *game)
 {
-	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[7],
+	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[5],
 		HUD_LM + 10, 10);
 	show_movements(game);
 	show_lifes(game);
@@ -1001,7 +924,7 @@ void	show_action(t_game *game)
 
 void	show_debug(t_game *game)
 {
-	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[6],
+	mlx_put_image_to_window(game->mlx, game->win, game->sprites.misc[4],
 		10, 10);
 	show_fps(game);
 	show_action(game);
@@ -1021,7 +944,7 @@ int	render_next_frame(t_game *game)
 		player_position(game);
 		background(game);
 		structure(game);
-		item(game);
+		items(game);
 		gate(game);
 		enemy(game);
 		player(game);

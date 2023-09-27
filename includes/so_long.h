@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 14:25:23 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/25 23:45:39 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/27 20:56:16 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define WIN_HEIGHT 768
 # define HUD_LM 920
 # define LIFE_NUM 7
+# define ANIM_INTV 25
 
 # define BPX 100
 # define MPX 8
@@ -72,8 +73,8 @@ typedef enum e_sprite_n
 	storm_n = 27,
 	coin_n = 4,
 	gate_n = 3,
-	misc_n = 12,
-	bg_n = 10,
+	misc_n = 9,
+	bg_n = 8,
 }		t_sprite_n;
 
 typedef enum e_bool
@@ -129,8 +130,8 @@ typedef struct s_sprites
 	void	*strom[27];
 	void	*coin[4];
 	void	*gate[3];
-	void	*misc[12];
-	void	*bg[10];
+	void	*misc[9];
+	void	*bg[8];
 }				t_sprites;
 
 typedef struct s_game
@@ -192,6 +193,10 @@ void		fps(t_game *game);
 void		player_position(t_game *game);
 // structure.c
 void		structure(t_game *game);
+// background.c
+void		background(t_game *game);
+// items.c
+void		items(t_game *game);
 // draw.c
 void		draw_block(int x, int y, void *sprite, t_game *game);
 void		background(t_game *game);

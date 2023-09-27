@@ -6,13 +6,13 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:36:49 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/25 23:54:00 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/27 20:44:06 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	draw_block_bg(int x, int y, void *sprite, t_game *game)
+static void	draw_background(int x, int y, void *sprite, t_game *game)
 {
 	if (x > WIN_WIDTH || y > WIN_HEIGHT)
 		return ;
@@ -20,21 +20,44 @@ void	draw_block_bg(int x, int y, void *sprite, t_game *game)
 		x + game->g_offset.x, y + game->g_offset.y);
 }
 
+static void	draw_sky(t_game *game)
+{
+	int	j;
+
+	j = 0;
+	while (j < game->g_len.x)
+	{
+		draw_block(j * BPX + game->p_offset.x,
+			0 + game->p_offset.y,
+			game->sprites.bg[0], game);
+		j++;
+	}
+}
+
 void	background(t_game *game)
 {
 	int	i;
 	int	j;
-	int	x_offset;
-	int	y_offset;
+	int	x_offs;
+	int	y_offs;
 
-	i = -1;
+	i = 0;
 	j = 1;
-	y_offset = BPX + game->p_offset.y;
+	draw_sky(game);
 	while (++i < bg_n)
 	{
-		x_offset = (((j * BPX) - (game->player->pos.x)) / (j * 4));
-		draw_block_bg(x_offset - BPX, y_offset, game->sprites.bg[i], game);
-		draw_block_bg((12 * BPX) + x_offset, y_offset, game->sprites.bg[i], game);
+		y_offs = (j + (BPX / 2) + game->p_offset.y);
+		if (i == 7 || i == 1)
+			draw_background(game->g_offset.x, y_offs, game->sprites.bg[i],
+				game);
+		else if (i == 6)
+			draw_background(game->g_offset.x, y_offs + (BPX / 8),
+				game->sprites.bg[i], game);
+		else
+		{
+			x_offs = (((j * 400) - (game->player->pos.x)) / (j * 4));
+			draw_background(x_offs - 50, y_offs, game->sprites.bg[i], game);
+		}
 		j++;
 	}
 }
