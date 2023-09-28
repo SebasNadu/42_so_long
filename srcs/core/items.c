@@ -6,18 +6,18 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 20:32:40 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/27 20:56:25 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/28 12:15:29 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-void	item_action(t_game *game)
+static void	item_action(t_game *game)
 {
 	game->c_num--;
 }
 
-void	item_collision(t_game *game)
+static void	item_collision(t_game *game)
 {
 	t_player	*p;
 
@@ -44,7 +44,7 @@ void	item_collision(t_game *game)
 	}
 }
 
-int	*get_item_sprite(t_game *game)
+static int	*get_item_sprite(t_game *game)
 {
 	static int	position;
 	static int	anim_intv;
@@ -62,7 +62,7 @@ int	*get_item_sprite(t_game *game)
 	return (game->sprites.coin[position]);
 }
 
-void	draw_item(t_game *game)
+static void	draw_item(t_game *game)
 {
 	int	i;
 	int	j;

@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 14:25:23 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/27 20:56:16 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/09/28 23:00:10 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ typedef enum e_sprite_t
 typedef enum e_sprite_n
 {
 	luke_n = 188,
-	storm_n = 27,
+	storm_n = 52,
 	coin_n = 4,
 	gate_n = 3,
-	misc_n = 9,
+	misc_n = 11,
 	bg_n = 8,
 }		t_sprite_n;
 
@@ -127,10 +127,10 @@ typedef struct s_enemy
 typedef struct s_sprites
 {
 	void	*luke[188];
-	void	*strom[27];
+	void	*strom[52];
 	void	*coin[4];
 	void	*gate[3];
-	void	*misc[9];
+	void	*misc[11];
 	void	*bg[8];
 }				t_sprites;
 
@@ -197,6 +197,8 @@ void		structure(t_game *game);
 void		background(t_game *game);
 // items.c
 void		items(t_game *game);
+// gate.c
+void		gate(t_game *game);
 // draw.c
 void		draw_block(int x, int y, void *sprite, t_game *game);
 void		background(t_game *game);
