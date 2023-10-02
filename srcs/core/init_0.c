@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 13:05:21 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/25 23:45:34 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/02 21:08:46 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	init_player(t_game *game)
 	game->player->life_state = 50;
 	game->player->life_num = LIFE_NUM;
 	game->player->direction = right;
+	game->player->jump_count = 0;
+	game->player->enemies_count = 0;
 	while (game->map[i])
 	{
 		j = 0;

@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 20:32:40 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/28 12:15:29 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/02 19:35:16 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	*get_item_sprite(t_game *game)
 	static int	position;
 	static int	anim_intv;
 
-	if (anim_intv >= ANIM_INTV)
+	if (anim_intv >= game->c_num * 5)
 	{
 		anim_intv = 0;
 		if (position < 3)

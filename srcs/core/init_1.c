@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 20:46:44 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/24 21:24:15 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/02 22:48:10 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	create_enemy(int i, int j, t_game *game)
 	enemy->direction = left;
 	enemy->anim_intv = 0;
 	enemy->death_state = 0;
+	enemy->life_state = 50;
 	if (game->enemies == NULL)
 		game->enemies = ft_lstnew(enemy);
 	else
