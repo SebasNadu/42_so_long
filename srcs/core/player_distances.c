@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_distances_utils.c                           :+:      :+:    :+:   */
+/*   player_distances.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 16:00:20 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/30 12:56:08 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/04 00:05:23 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-int	get_player_d_distance(t_game *game)
+int	get_pd_dist(t_game *game)
 {
 	int			dist_collision;
 	t_player	*p;
@@ -29,7 +29,7 @@ int	get_player_d_distance(t_game *game)
 	return (DPX);
 }
 
-int	get_player_l_distance(t_game *game)
+int	get_pl_dist(t_game *game)
 {
 	int			dist_collision;
 	t_player	*p;
@@ -54,7 +54,7 @@ int	get_player_l_distance(t_game *game)
 	return (MPX);
 }
 
-int	get_player_r_distance(t_game *game)
+int	get_pr_dist(t_game *game)
 {
 	int			dist_collision;
 	t_player	*p;
@@ -79,15 +79,15 @@ int	get_player_r_distance(t_game *game)
 	return (MPX);
 }
 
-int	get_player_g_distance(t_game *game)
+int	get_pg_dist(t_game *game)
 {
 	int			dist_collision;
 	t_player	*p;
 
-	p = game->player;
-	if (game->map[(p->t_r.y / BPX) + 1][(p->t_r.x + HPX) / BPX] == '1'
-	||
-	game->map[(game->player->b_r.y / BPX) + 1][(p->b_r.x - HPX) / BPX] == '1')
+	p = game->player; 
+	if (game->map[(p->t_l.y / BPX) + 1][(p->t_r.x + HPX) / BPX] == '1'
+		||
+	game->map[((game->player->b_r.y + HPX) / BPX) + 1][(p->b_r.x - HPX) / BPX] == '1')
 	{
 		dist_collision = (BPX * ((p->t_r.y / BPX) + 1)) - p->t_r.y - 1;
 		if (dist_collision > GPX)
@@ -97,7 +97,7 @@ int	get_player_g_distance(t_game *game)
 	return (GPX);
 }
 
-int	get_player_j_distance(t_game *game)
+int	get_pj_dist(t_game *game)
 {
 	int			dist_collision;
 	t_player	*p;

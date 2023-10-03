@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 13:05:21 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/02 21:08:46 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/03 22:41:14 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_player(t_game *game)
 	game->player->life_num = LIFE_NUM;
 	game->player->direction = right;
 	game->player->jump_count = 0;
-	game->player->enemies_count = 0;
+	game->player->kills_count = 0;
 	while (game->map[i])
 	{
 		j = 0;
@@ -97,6 +97,8 @@ void	init_game(char *argv[], t_game *game)
 	game->lst_map = NULL;
 	game->enemies = NULL;
 	game->map = NULL;
+	game->won = false;
+	game->lose = false;
 	if (argv[2] && ft_strncmp(argv[2], "DEBUG=1", 7) == 0)
 		game->debug = true;
 	else

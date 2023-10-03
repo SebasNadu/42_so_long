@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 21:17:32 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/24 21:48:44 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/03 20:18:33 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	close_hook(int keycode, t_game *game)
 
 int	keydown_hook(int keycode, t_game *game)
 {
-	set_action(keycode, game);
+	if (game->won == false && game->lose == false)
+		set_action(keycode, game);
 	return (0);
 }
 

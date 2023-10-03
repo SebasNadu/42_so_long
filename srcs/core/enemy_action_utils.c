@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 23:22:04 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/02 23:02:43 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/03 23:21:48 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	enemy_player_action(t_enemy *e, t_game *game)
 		game->player->life_state = 50;
 		e->death_state = 12;
 		e->is_alive = false;
-		game->player->enemies_count++;
+		game->player->kills_count++;
 	}
 }
 
@@ -41,9 +41,8 @@ void	lose_action(t_game *game)
 	}
 	else if (game->player->life_num < 1)
 	{
-		if (anim_intv < 100)
-			mlx_put_image_to_window(game->mlx, game->win,
-				game->sprites.misc[9], 0, 0);
+		game->lose = true;
+		show_final_screen(game);
 		anim_intv++;
 	}
 }

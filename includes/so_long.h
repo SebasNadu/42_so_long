@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 14:25:23 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/02 22:08:09 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/03 23:20:34 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef enum e_sprite_n
 	storm_n = 62,
 	coin_n = 4,
 	gate_n = 3,
-	misc_n = 11,
+	misc_n = 12,
 	bg_n = 8,
 }		t_sprite_n;
 
@@ -104,7 +104,7 @@ typedef struct s_player
 	int		life_num;
 	int		jump_count;
 	int		last_ac[3];
-	int		enemies_count;
+	int		kills_count;
 }				t_player;
 
 typedef struct s_enemy
@@ -133,7 +133,7 @@ typedef struct s_sprites
 	void	*strom[62];
 	void	*coin[4];
 	void	*gate[3];
-	void	*misc[11];
+	void	*misc[12];
 	void	*bg[8];
 }				t_sprites;
 
@@ -155,6 +155,8 @@ typedef struct s_game
 	t_player	*player;
 	t_list		*enemies;
 	t_bool		debug;
+	t_bool		won;
+	t_bool		lose;
 }				t_game;
 
 // init_0.c
@@ -202,11 +204,26 @@ void		player_move_x(t_game *game);
 void		player_move_y(t_game *game);
 void		player_move_d(t_game *game);
 // player_distances_utils.c
-int			get_player_j_distance(t_game *game);
-int			get_player_g_distance(t_game *game);
-int			get_player_r_distance(t_game *game);
-int			get_player_l_distance(t_game *game);
-int			get_player_d_distance(t_game *game);
+int			get_pj_dist(t_game *game);
+int			get_pg_dist(t_game *game);
+int			get_pr_dist(t_game *game);
+int			get_pl_dist(t_game *game);
+int			get_pd_dist(t_game *game);
+// player_sprites_0.c
+int			player_jump_sprite(int *last_anim, t_game *game);
+int			player_attack_sprite(int *last_anim, t_game *game);
+int			player_walk_sprite(int	*last_anim, t_game *game);
+int			player_down_sprite(int *last_anim, t_game *game);
+int			player_fall_sprite(int *last_anim, t_game *game);
+// player_sprites_1.c
+int			player_hurt_sprite(int *last_anim, t_game *game);
+int			player_stay_sprite(int *last_anim, t_game *game);
+int			player_double_jump_sprite(int *last_anim, t_game *game);
+int			player_attack_down_sprite(int *last_anim, t_game *game);
+// player_sprites_2.c
+int			player_jump_attack_sprite(int *last_anim, t_game *game);
+int			player_slide_sprite(int *last_anim, t_game *game);
+int			player_end_sprite(t_game *game);
 // player_draw_utils.c
 int			*get_player_sprite(t_game *game);
 // structure.c
@@ -230,5 +247,11 @@ int			*get_enemy_sprite(t_enemy *e, t_game *game);
 // draw.c
 void		draw_block(int x, int y, void *sprite, t_game *game);
 void		background(t_game *game);
+// show_debug.c
+void		show_debug(t_game *game);
+// show_hud.c
+void		show_hud(t_game *game);
+// show_final_screen.c
+void		show_final_screen(t_game *game);
 
 #endif

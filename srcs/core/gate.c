@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:20:04 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/02 21:56:06 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/03 23:20:09 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	gate_action(t_game *game)
 {
 	static int	anim_intv;
-	char		*msg; 
-	char		*count;
 
 	if (game->c_num == 0 && anim_intv == 200)
 	{
@@ -26,20 +24,8 @@ void	gate_action(t_game *game)
 	}
 	else if (game->c_num == 0)
 	{
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->sprites.misc[10], 0, 0);
-		count = ft_itoa(game->player->enemies_count);
-		msg = ft_strjoin("dead enemies count: ", count);
-		mlx_string_put(game->mlx, game->win, (WIN_WIDTH / 2) - 64,
-			WIN_HEIGHT - 176, 11001101, msg);
-		free(count);
-		free(msg);
-		count = ft_itoa(game->mvts_num);
-		msg = ft_strjoin("movements count: ", count);
-		mlx_string_put(game->mlx, game->win, (WIN_WIDTH / 2) - 64,
-			WIN_HEIGHT - 160, 11001101, msg);
-		free(count);
-		free(msg);
+		game->won = true;
+		show_final_screen(game);
 		anim_intv++;
 	}
 }
