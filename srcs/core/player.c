@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:27:56 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/04 00:07:53 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/04 15:21:52 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,12 @@ void	player_position(t_game *game)
 	int			p_h;
 
 	p_h = 100;
-	p_w = 100;
+	p_w = 80;
 	p = game->player;
-	if ((game->map[(p->t_r.y - HPX) / BPX][(p->t_r.x + HPX) / BPX] == '1')
-		|| (game->map[(p->b_r.y - HPX) / BPX][(p->b_r.x - HPX) / BPX] == '1'))
+	if (p->t_l.x == 0 && p->t_l.y == 0)
 	{
-		p->pos.y -= 5;
-		p->pos.x += 5;
+		p->pos.y -= 50;
+		p->pos.x -= 50;
 	}
 	p->t_l.x = p->pos.x + ((200 - p_w) / 2);
 	p->t_l.y = p->pos.y + ((200 - p_h) / 2);

@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:36:49 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/27 20:44:06 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/04 14:36:27 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	background(t_game *game)
 	i = 0;
 	j = 1;
 	draw_sky(game);
+	if (game->g_len.y * BPX < WIN_HEIGHT)
+		return ;
 	while (++i < bg_n)
 	{
 		y_offs = (j + (BPX / 2) + game->p_offset.y);

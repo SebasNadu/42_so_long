@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 22:05:29 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/03 22:42:14 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/04 18:56:03 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 int	player_sprite_pos2(int atk_p, int hurt_p, int *last_anim, t_game *game)
 {
-	(void)hurt_p;
-	if (((game->player->ac[0] == 2 && game->player->ac[1] == 4)
-			|| (game->player->ac[0] == 1 && game->player->ac[1] == 4))
-		&& get_pg_dist(game) == 0)
+	(void)hurt_p; 
+	if (((game->player->ac[0] == k_r && game->player->ac[1] == k_d) 
+			|| (game->player->ac[0] == k_l && game->player->ac[1] == k_d))
+		&& get_pg_dist(game) == 0) 
 		return (player_slide_sprite(last_anim, game));
-	else if ((game->player->ac[0] == 2 || game->player->ac[1] == 2
-			|| game->player->ac[0] == 1 || game->player->ac[1] == 1)
+	else if ((game->player->ac[0] == k_r || game->player->ac[1] == k_r
+			|| game->player->ac[0] == k_l || game->player->ac[1] == k_l)
 		&& get_pg_dist(game) == 0)
 		return (player_walk_sprite(last_anim, game));
-	else if ((game->player->ac[0] == 4 || game->player->ac[1] == 4)
+	else if ((game->player->ac[0] == k_d || game->player->ac[1] == k_d)
 		&& get_pg_dist(game) >= 0 && atk_p > 0)
 		return (player_attack_down_sprite(last_anim, game));
-	else if ((game->player->ac[0] == 4 || game->player->ac[1] == 4)
+	else if ((game->player->ac[0] == k_d || game->player->ac[1] == k_d)
 		&& get_pg_dist(game) >= 0)
 		return (player_down_sprite(last_anim, game));
 	else if (game->player->jump_state == 0 && get_pg_dist(game) > 0)
@@ -44,9 +44,9 @@ int	player_sprite_pos(int atk_p, int hurt_p, int *last_anim, t_game *game)
 		return (player_double_jump_sprite(last_anim, game));
 	else if (game->player->jump_state != 0 && game->player->jump_count == 0)
 		return (player_jump_sprite(last_anim, game));
-	else if (atk_p > 0 && game->player->ac[0] != 4 && get_pg_dist(game) > 0)
+	else if (atk_p > 0 && game->player->ac[0] != k_d && get_pg_dist(game) > 0)
 		return (player_jump_attack_sprite(last_anim, game));
-	else if (atk_p > 0 && game->player->ac[0] != 4)
+	else if (atk_p > 0 && game->player->ac[0] != k_d) 
 		return (player_attack_sprite(last_anim, game));
 	else if (hurt_p > 0)
 		return (player_hurt_sprite(last_anim, game));

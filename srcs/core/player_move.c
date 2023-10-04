@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 09:24:07 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/03 16:54:24 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/04 19:04:04 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	player_jump(t_game *game)
 	t_player	*p;
 
 	p = game->player;
-	if ((p->ac[0] == 10 || p->ac[1] == 10) && p->jump_state == 0
+	if ((p->ac[0] == k_u || p->ac[1] == k_u) && p->jump_state == 0
 		&& get_pg_dist(game) < 15 && p->jump_count < 1)
 	{
-		if (((p->last_ac[0] == 0 && p->last_ac[1] == 0) || (p->last_ac[0] != 10
-					&& p->last_ac[1] == 0)) && p->jump_count < 1)
+		if (((p->last_ac[0] == k_n && p->last_ac[1] == k_n) || \
+		(p->last_ac[0] != k_u && p->last_ac[1] == k_n)) && p->jump_count < 1)
 		{
 			p->jump_state = 8;
 			p->jump_count++;
@@ -39,7 +39,7 @@ void	player_gravity(t_game *game)
 	t_player	*p;
 
 	p = game->player;
-	if ((p->ac[0] != 4) && p->jump_state == 0)
+	if ((p->ac[0] != k_d) && p->jump_state == 0)
 		p->pos.y += get_pg_dist(game);
 	if (get_pg_dist(game) == 0)
 		p->jump_count = 0;
@@ -50,9 +50,9 @@ void	player_move_x(t_game *game)
 	t_player	*p;
 
 	p = game->player;
-	if (p->ac[0] == 2)
+	if (p->ac[0] == k_r)
 		p->pos.x += get_pr_dist(game);
-	else if (p->ac[0] == 1)
+	else if (p->ac[0] == k_l)
 		p->pos.x -= get_pl_dist(game);
 }
 
@@ -61,9 +61,9 @@ void	player_move_y(t_game *game)
 	t_player	*p;
 
 	p = game->player;
-	if (p->ac[0] == 3)
+	if (p->ac[0] == 10)
 		p->pos.y -= get_pj_dist(game);
-	else if (p->ac[0] == 4)
+	else if (p->ac[0] == k_d)
 		p->pos.y += get_pd_dist(game);
 }
 
@@ -72,14 +72,15 @@ void	player_move_d(t_game *game)
 	t_player	*p;
 
 	p = game->player;
-	if ((((p->ac[0] == 10 && p->ac[1] == 1) || (p->ac[0] == 1 && p->ac[1] == 10)
-			) || ((p->ac[0] == 10 && p->ac[1] == 2) || \
-		(p->ac[0] == 2 && p->ac[1] == 10))) && get_pg_dist(game) == 0)
+	if ((((p->ac[0] == k_u && p->ac[1] == k_l) || \
+		(p->ac[0] == k_l && p->ac[1] == k_u)) || \
+		((p->ac[0] == k_u && p->ac[1] == k_r) || \
+		(p->ac[0] == k_r && p->ac[1] == k_u))) && get_pg_dist(game) == 0)
 	{
 		p->jump_state = 7;
-		if (p->ac[1] == 1)
+		if (p->ac[1] == k_l)
 			p->diagonal_dir = 1;
-		else if (p->ac[1] == 2)
+		else if (p->ac[1] == k_r)
 			p->diagonal_dir = 2;
 	}
 	if (p->jump_state > 0 && p->diagonal_dir > 0)
