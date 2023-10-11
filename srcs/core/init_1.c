@@ -6,11 +6,11 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 20:46:44 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/02 22:48:10 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/11 20:40:31 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../../includes/so_long.h"
 
 void	init_hooks(t_game *game)
 {

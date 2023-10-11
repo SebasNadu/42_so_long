@@ -6,7 +6,7 @@
 #    By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 18:41:02 by sebasnadu         #+#    #+#              #
-#    Updated: 2023/09/16 19:17:18 by sebasnadu        ###   ########.fr        #
+#    Updated: 2023/10/11 22:08:09 by sebasnadu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,13 +39,14 @@ else
 	CFLAGS			= -Wall -Wextra -Werror
 endif
 
-SRC_DIR				= ./srcs
 INC_DIR				= ./includes
+SRC_DIR				= ./srcs
 OBJ_DIR				= ./obj
 SRC_SUB_DIRS	= $(shell find $(SRC_DIR) -type d -not -path '$(SRC_DIR)')
 SRC						= $(foreach dir, $(SRC_SUB_DIRS), $(wildcard $(dir)/*.c))
 OBJ_SUB_DIRS	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC_SUB_DIRS))
-OBJ						= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC:.c=.o))
+# OBJ						= $(subst $(SRC_SUB_DIR), $(OBJ_SUB_DIR), $(SRC:.c=.o))
+OBJ			= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC:.c=.o))
 
 ifeq ($(UNAME), Darwin)
 	GFLAGS			= -L$(GPATH) -lmlx -framework OpenGL -framework AppKit -lz
@@ -79,7 +80,7 @@ $(NAME) : $(OBJ) _libft _mlx
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(GFLAGS) -o $@
 	@$(PRINTF) "\r%100s\r$(GREEN)$(NAME) is up to date!$(DEFAULT)\n"
 
-$(OBJ_SUB_DIRS)/%.o : $(SRC_SUB_DIRS)/%.c
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_SUB_DIRS)
 	@$(eval SRC_COUNT = $(shell expr $(SRC_COUNT) + 1))
 	@$(PRINTF) "\r%100s\r[ %d/%d (%d%%) ] Compiling $(BLUE)$<$(DEFAULT)..." "" $(SRC_COUNT) $(SRC_COUNT_TOT) $(SRC_PCT)

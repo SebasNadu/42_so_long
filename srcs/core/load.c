@@ -6,11 +6,11 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 17:06:09 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/25 11:09:08 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/11 20:40:39 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../../includes/so_long.h"
 
 static char	*sprite_path(char *s_name, int n)
 {

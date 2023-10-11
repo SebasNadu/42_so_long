@@ -6,11 +6,11 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 14:52:23 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/09/23 16:34:26 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/11 20:40:47 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../../includes/so_long.h"
 
 t_bool	check_map_len(t_game *game)
 {

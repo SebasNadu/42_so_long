@@ -6,11 +6,11 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 13:05:21 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/03 22:41:14 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/11 20:40:26 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "../../includes/so_long.h"
 
 void	init_camera(t_game *game)
 {
