@@ -6,7 +6,7 @@
 #    By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 18:41:02 by sebasnadu         #+#    #+#              #
-#    Updated: 2023/10/11 22:08:09 by sebasnadu        ###   ########.fr        #
+#    Updated: 2023/10/11 22:23:21 by sebasnadu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJ) _libft _mlx
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(GFLAGS) -o $@
-	@$(PRINTF) "\r%100s\r$(GREEN)$(NAME) is up to date!$(DEFAULT)\n"
+	@$(PRINTF) "\r%100s\r$(GREEN)$(NAME): Compilation success 🎉!$(DEFAULT)\n"
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_SUB_DIRS)

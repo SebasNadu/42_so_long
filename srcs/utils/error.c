@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 13:06:48 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:42:42 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/11 22:27:54 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,14 @@ void	sl_error(t_game *game, int err)
 	(void)game;
 	if (err == inv_args)
 		ft_printf_fd(2, "Error: You must indicate only one map path!\n");
-	if (err == inv_map)
+	else if (err == inv_map)
 		ft_printf_fd(2, "Error: Unable to open the map!\n");
-	if (err == inv_map_form)
+	else if (err == inv_map_form)
 		ft_printf_fd(2, "Error: The map is not in a valid format!\n");
-	if (err == inv_sprite)
+	else if (err == inv_sprite)
 		ft_printf_fd(2, "Error: Unable to open the sprite!\n");
-	perror("Error");
+	else
+		perror("Error");
 	free_game(game);
 	exit(EXIT_FAILURE);
 }
