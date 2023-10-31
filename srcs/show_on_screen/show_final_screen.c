@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 23:03:54 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/31 17:32:00 by sebas_nadu       ###   ########.fr       */
+/*   Updated: 2023/10/31 20:35:30 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	show_final_screen(t_game *game)
 	msg = ft_strjoin("kills count: ", count);
 	mlx_string_put(game->mlx, game->win, (WIN_WIDTH / 2) - 64,
 		WIN_HEIGHT - 165, 0xFFFFFF, msg);
+	free(count);
+	free(msg);
 	count = ft_itoa(game->mvts_num);
 	msg = ft_strjoin("movements count: ", count);
 	mlx_string_put(game->mlx, game->win, (WIN_WIDTH / 2) - 64,

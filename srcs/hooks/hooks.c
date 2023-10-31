@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 21:17:32 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:41:26 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 19:59:35 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	close_hook(int keycode, t_game *game)
 {
-	if (keycode == 0)
-		free_game(game);
+	(void)keycode;
+	free_game(game);
 	exit(EXIT_SUCCESS);
 	return (0);
 }

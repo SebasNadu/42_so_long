@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 13:06:48 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 22:27:54 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 20:30:26 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,30 @@ static void	ft_free_matrix(char **matrix)
 	free(matrix);
 }
 
+void	destroy_images(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < luke_n && game->sprites.luke[i])
+		mlx_destroy_image(game->mlx, game->sprites.luke[i++]);
+	i = 0;
+	while (i < storm_n && game->sprites.strom[i])
+		mlx_destroy_image(game->mlx, game->sprites.strom[i++]);
+	i = 0;
+	while (i < coin_n && game->sprites.coin[i])
+		mlx_destroy_image(game->mlx, game->sprites.coin[i++]);
+	i = 0;
+	while (i < gate_n && game->sprites.gate[i])
+		mlx_destroy_image(game->mlx, game->sprites.gate[i++]);
+	i = 0;
+	while (i < misc_n && game->sprites.misc[i])
+		mlx_destroy_image(game->mlx, game->sprites.misc[i++]);
+	i = 0;
+	while (i < bg_n && game->sprites.bg[i])
+		mlx_destroy_image(game->mlx, game->sprites.bg[i++]);
+}
+
 void	free_game(t_game *game)
 {
 	if (game->player)
@@ -32,10 +56,14 @@ void	free_game(t_game *game)
 		ft_lstclear(&game->enemies, free);
 	if (game->map)
 		ft_free_matrix(game->map);
+	destroy_images(game);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
 		free(game->mlx);
+	}
 }
 
 void	sl_error(t_game *game, int err)

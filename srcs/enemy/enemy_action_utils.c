@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 23:22:04 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:41:05 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 19:56:15 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	lose_action(t_game *game)
 {
 	static int	anim_intv;
 
-	if (game->player->life_num < 1 && anim_intv == 100)
+	if (game->player->life_num < 1 && anim_intv == 50)
 	{
 		ft_printf("You lose.\n");
 		free_game(game);
