@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 16:00:20 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:41:56 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 18:13:12 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	get_pg_dist(t_game *game)
 	int			dist_collision;
 	t_player	*p;
 
-	p = game->player; 
+	p = game->player;
 	if (game->map[(p->t_r.y / BPX) + 1][(p->t_r.x + (HPX + EHPX)) / BPX] == '1'
 	|| game->map[(p->b_r.y / BPX) + 1][(p->b_r.x - (HPX + EHPX)) / BPX] == '1')
 	{

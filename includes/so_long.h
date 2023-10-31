@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 14:25:23 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/04 23:37:13 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 13:16:59 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 # ifdef __linux__
 #  define OS "linux"
-#  include "../minilibx_linux/mlx.h"
+#  include "../minilibx-linux/mlx.h"
 # else
 #  define OS "macos"
-#  include "../minilibx_mms/mlx.h"
+#  include "../minilibx_opengl/mlx.h"
 # endif
 
 # include <stdlib.h>

@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 23:03:54 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:42:27 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 17:32:00 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	show_final_screen(t_game *game)
 {
-	char		*msg; 
+	char		*msg;
 	char		*count;
 	int			bg_position;
 

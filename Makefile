@@ -6,7 +6,7 @@
 #    By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 18:41:02 by sebasnadu         #+#    #+#              #
-#    Updated: 2023/10/11 22:23:21 by sebasnadu        ###   ########.fr        #
+#    Updated: 2023/10/31 16:13:09 by sebas_nadu       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ UNAME					= $(shell uname)
 NAME					= so_long
 
 # LIBFT
-LIBFT_DIR 		= ./LIBFT
+LIBFT_DIR 		= ./libft
 LIBFT_PATH		= $(LIBFT_DIR)/libft.a
 LIBFT_FLAGS 	= -L $(LIBFT_DIR) -lft
 
@@ -50,20 +50,17 @@ OBJ			= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC:.c=.o))
 
 ifeq ($(UNAME), Darwin)
 	GFLAGS			= -L$(GPATH) -lmlx -framework OpenGL -framework AppKit -lz
-	# GFLAGS			= -L$(GPATH) -lmlx -L/usr/X11/lib -lXext -lX11 -framework Metal -framework Metalkit
 	GPATH				= ./minilibx_opengl
-	# GPATH				= ./minilibx_linux
 	MLX_PATH		= $(GPATH)/libmlx.a
 	INCLUDES		= -I./includes -I$(LIBFT_DIR)/includes -I$(GPATH)
-	# INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I/opt/X11/include -I$(GPATH)
 	LIBS				= -L$(LIBFT_DIR) -lft
 else
-	# GFLAGS			= -I$(GPATH) -L$(GPATH) -l$(GPATH) -lXest -lX11 -lext -lm -lbsd
-	GFLAGS			= -I$(GPATH) -L$(GPATH) -l$(GPATH) -lXest -lX11 -lm -lz
-	GPATH				= ./minilibx_linux
+	# GFLAGS			= -I$(GPATH) -L$(GPATH) -lmlx -lXext -lX11 -lm -lbsd
+	GFLAGS			= -L$(GPATH) -lmlx -lXext -lX11 -lXrender -lm
+	GPATH				= minilibx-linux
 	MLX_PATH		= $(GPATH)/libmlx.a
-	INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I/usr/lib
-	LIBS				= -L$(LIBFT_DIR) -lft -L/usr/lib
+	INCLUDES			= -I./includes -I$(LIBFT_DIR)/includes -I$(GPATH)
+	LIBS				= -L$(LIBFT_DIR) -lft
 endif
 
 # progress bar
@@ -80,7 +77,7 @@ $(NAME) : $(OBJ) _libft _mlx
 	@$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(GFLAGS) -o $@
 	@$(PRINTF) "\r%100s\r$(GREEN)$(NAME): Compilation success 🎉!$(DEFAULT)\n"
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+$(OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_SUB_DIRS)
 	@$(eval SRC_COUNT = $(shell expr $(SRC_COUNT) + 1))
 	@$(PRINTF) "\r%100s\r[ %d/%d (%d%%) ] Compiling $(BLUE)$<$(DEFAULT)..." "" $(SRC_COUNT) $(SRC_COUNT_TOT) $(SRC_PCT)

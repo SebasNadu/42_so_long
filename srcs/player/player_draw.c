@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 22:05:29 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:42:00 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 19:24:25 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	player_sprite_pos2(int atk_p, int hurt_p, int *last_anim, t_game *game)
 {
-	(void)hurt_p; 
-	if (((game->player->ac[0] == k_r && game->player->ac[1] == k_d) 
+	(void)hurt_p;
+	if (((game->player->ac[0] == k_r && game->player->ac[1] == k_d)
 			|| (game->player->ac[0] == k_l && game->player->ac[1] == k_d))
-		&& get_pg_dist(game) == 0) 
+		&& get_pg_dist(game) == 0)
 		return (player_slide_sprite(last_anim, game));
 	else if ((game->player->ac[0] == k_r || game->player->ac[1] == k_r
 			|| game->player->ac[0] == k_l || game->player->ac[1] == k_l)
@@ -46,7 +46,7 @@ int	player_sprite_pos(int atk_p, int hurt_p, int *last_anim, t_game *game)
 		return (player_jump_sprite(last_anim, game));
 	else if (atk_p > 0 && game->player->ac[0] != k_d && get_pg_dist(game) > 0)
 		return (player_jump_attack_sprite(last_anim, game));
-	else if (atk_p > 0 && game->player->ac[0] != k_d) 
+	else if (atk_p > 0 && game->player->ac[0] != k_d)
 		return (player_attack_sprite(last_anim, game));
 	else if (hurt_p > 0)
 		return (player_hurt_sprite(last_anim, game));
@@ -66,7 +66,7 @@ int	*get_player_sprite(t_game *game)
 		atk_progress = 5;
 	if (game->player->life_state == 1)
 		hurt_progress = 5;
-	if (anim_intv == 3)
+	if (anim_intv == 5)
 	{
 		anim_intv = 0;
 		if (atk_progress > 0)

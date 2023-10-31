@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 22:04:15 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:42:32 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 17:39:33 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	show_lifes(t_game *game)
 	}
 }
 
+// ft_printf("\rMovements Count: %s", num_movements);
 void	show_movements(t_game *game)
 {
 	char	*num_movements;
