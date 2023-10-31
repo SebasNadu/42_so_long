@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 21:09:12 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:42:16 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 20:44:45 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	player_slide_sprite(int *last_anim, t_game *game)
 		else
 			i = 13;
 	}
-	else 
+	else
 	{
 		if (*last_anim != 11)
 			i = 115;
@@ -63,20 +63,20 @@ int	player_jump_attack_sprite(int *last_anim, t_game *game)
 	if (game->player->direction == right)
 	{
 		if (*last_anim != 10)
-			i = 58; 
+			i = 58;
 		else if ((i > 57 && i < 67))
 			i++;
-		else 
-			i = 58; 
+		else
+			i = 58;
 	}
 	else
 	{
 		if (*last_anim != 10)
-			i = 152; 
+			i = 152;
 		else if ((i > 151 && i < 161))
 			i++;
 		else
-			i = 152; 
+			i = 152;
 	}
 	*last_anim = 10;
 	return (i);

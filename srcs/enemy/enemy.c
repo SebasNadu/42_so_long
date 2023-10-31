@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 23:13:04 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:41:00 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/10/31 20:43:31 by sebas_nadu       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ void	enemy_position(t_enemy *e, t_game *game)
 	e->t_l.x = e->pos.x + ((200 - e_w) / 2);
 	e->t_l.y = e->pos.y + ((200 - e_h) / 2);
 	e->t_r.x = e->t_l.x;
-	e->t_r.y = e->t_l.y + e_h; 
+	e->t_r.y = e->t_l.y + e_h;
 	e->b_l.x = e->t_l.x + e_w;
 	e->b_l.y = e->t_l.y;
 	e->b_r.x = e->t_l.x + e_w;
-	e->b_r.y = e->t_l.y + e_h; 
+	e->b_r.y = e->t_l.y + e_h;
 	if ((game->map[(e->t_r.y - HPX) / BPX][(e->t_r.x + HPX) / BPX] == '1')
 		|| (game->map[(e->b_r.y - HPX) / BPX][(e->b_r.x - HPX) / BPX] == '1'))
 	{
