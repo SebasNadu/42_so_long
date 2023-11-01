@@ -6,7 +6,7 @@
 #    By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 18:41:02 by sebasnadu         #+#    #+#              #
-#    Updated: 2023/10/31 16:13:09 by sebas_nadu       ###   ########.fr        #
+#    Updated: 2023/11/01 18:23:58 by johnavar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,4 +105,8 @@ _libft :
 _mlx :
 	@make -C $(GPATH)
 
-.PHONY : all clean fclean re _libft _mlx
+norminette: | $(LIBFT_DIR)
+	@$(PRINTF) "$(CYAN)\nChecking norm for $(NAME)...$(DEFAULT)\n"
+	@norminette -R CheckForbiddenSourceHeader $(SRC_DIR) $(LIBFT_DIR) includes
+
+.PHONY : all clean fclean re _libft _mlx norminette
