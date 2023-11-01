@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 13:06:48 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/31 20:30:26 by sebas_nadu       ###   ########.fr       */
+/*   Updated: 2023/11/01 08:38:26 by sebasnadu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	destroy_images(t_game *game)
 		mlx_destroy_image(game->mlx, game->sprites.bg[i++]);
 }
 
+#ifdef __linux__
+
 void	free_game(t_game *game)
 {
 	if (game->player)
@@ -65,6 +67,27 @@ void	free_game(t_game *game)
 		free(game->mlx);
 	}
 }
+
+#else
+
+void	free_game(t_game *game)
+{
+	if (game->player)
+		free(game->player);
+	if (game->lst_map)
+		ft_lstclear(&game->lst_map, free);
+	if (game->enemies)
+		ft_lstclear(&game->enemies, free);
+	if (game->map)
+		ft_free_matrix(game->map);
+	destroy_images(game);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+		free(game->mlx);
+}
+
+#endif
 
 void	sl_error(t_game *game, int err)
 {
