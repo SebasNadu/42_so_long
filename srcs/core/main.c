@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 21:18:26 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/31 20:00:26 by sebas_nadu       ###   ########.fr       */
+/*   Updated: 2023/11/01 17:34:05 by johnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	main(int argc, char **argv)
 {
 	t_game	game;
 
-	if (argc > 3)
+	ft_memset(&game, 0, sizeof(t_game));
+	if (argc > 3 || argc == 1)
 		sl_error(&game, inv_args);
 	init_game(argv, &game);
 	init_map(argc, argv, &game);
