@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:20:04 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/31 19:57:09 by sebas_nadu       ###   ########.fr       */
+/*   Updated: 2023/11/03 18:15:25 by johnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	gate_action(t_game *game)
 
 	if (game->c_num == 0 && anim_intv == 50)
 	{
-		ft_printf("You win!\n");
+		ft_printf("\033[0;92mYou win!\n\033[0;39m");
 		free_game(game);
 		exit(EXIT_SUCCESS);
 	}

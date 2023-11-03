@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 23:22:03 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/04 23:28:34 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/11/03 18:08:46 by johnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ enum e_so_long_err
 	inv_map,
 	inv_map_form,
 	inv_sprite,
+	inv_use,
 };
 
 enum e_direction

@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 13:06:48 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/11/01 08:38:26 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/11/03 18:05:13 by johnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,21 @@ void	sl_error(t_game *game, int err)
 {
 	(void)game;
 	if (err == inv_args)
-		ft_printf_fd(2, "Error: You must indicate only one map path!\n");
+		ft_printf_fd(2,
+			"\033[0;91mError: You must indicate only one map path!\n\033[0;39m");
 	else if (err == inv_map)
-		ft_printf_fd(2, "Error: Unable to open the map!\n");
+		ft_printf_fd(2, "\033[0;91mError: Unable to open the map!\n\033[0;39m");
 	else if (err == inv_map_form)
-		ft_printf_fd(2, "Error: The map is not in a valid format!\n");
+		ft_printf_fd(2,
+			"\033[0;91mError: The map is not in a valid format!\n\033[0;39m");
 	else if (err == inv_sprite)
-		ft_printf_fd(2, "Error: Unable to open the sprite!\n");
+		ft_printf_fd(2, "\033[0;91mError: Unable to open the sprite!\n\033[0;39m");
+	else if (err == inv_use)
+	{
+		ft_printf_fd(2, "\033[0;91mError: \033[0;39mUsage:\n");
+		ft_printf_fd(2, "\t\033[0;93mNormal Mode: ./so_long [map_path]\n");
+		ft_printf_fd(2, "\tDev Mode: ./so_long [map_path] [DEBUG=1]\n\033[0;39m");
+	}
 	else
 		perror("Error");
 	free_game(game);

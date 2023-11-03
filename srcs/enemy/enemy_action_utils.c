@@ -6,7 +6,7 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 23:22:04 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/31 19:56:15 by sebas_nadu       ###   ########.fr       */
+/*   Updated: 2023/11/03 18:13:19 by johnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	lose_action(t_game *game)
 
 	if (game->player->life_num < 1 && anim_intv == 50)
 	{
-		ft_printf("You lose.\n");
+		ft_printf("\033[0;91mYou lose.\n\033[0;39m");
 		free_game(game);
 		exit(EXIT_SUCCESS);
 	}
@@ -61,7 +61,7 @@ void	enemy_action(t_enemy *e, t_game *game)
 		lose_action(game);
 	if (game->player->life_state < 1)
 	{
-		ft_printf("You loose 1 life!\n");
+		ft_printf("\033[0;93mYou loose 1 life!\n\033[0;39m");
 		game->player->life_state = 50;
 		game->player->life_num--;
 		e->attack_state = 50;
