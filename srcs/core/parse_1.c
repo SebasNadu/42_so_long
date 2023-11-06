@@ -6,11 +6,39 @@
 /*   By: sebasnadu <johnavar@student.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 15:01:37 by sebasnadu         #+#    #+#             */
-/*   Updated: 2023/10/11 20:40:52 by sebasnadu        ###   ########.fr       */
+/*   Updated: 2023/11/06 15:37:33 by johnavar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/so_long.h"
+
+static void	check_valid_requisites(t_game *game, int elements[3], int i, int j)
+{
+	if (game->map[i][j] == 'C')
+	{
+		if (game->map[i][j + 1] != '1' || game->map[i][j - 1] != '1'
+			|| game->map[i + 1][j] != '1' || game->map[i - 1][j] != '1')
+			elements[0]++;
+		else
+			elements[0]--;
+	}
+	else if (game->map[i][j] == 'P')
+	{
+		if (game->map[i][j + 1] != '1' || game->map[i][j - 1] != '1'
+			|| game->map[i + 1][j] != '1' || game->map[i - 1][j] != '1')
+			elements[1]++;
+		else
+			elements[1]--;
+	}
+	else if (game->map[i][j] == 'E')
+	{
+		if (game->map[i][j + 1] != '1' || game->map[i][j - 1] != '1'
+			|| game->map[i + 1][j] != '1' || game->map[i - 1][j] != '1')
+			elements[2]++;
+		else
+			elements[2]--;
+	}
+}
 
 t_bool	check_map_requisites(t_game *game)
 {
@@ -25,12 +53,7 @@ t_bool	check_map_requisites(t_game *game)
 		j = 0;
 		while (game->map[i][j])
 		{
-			if (game->map[i][j] == 'C')
-				elements[0]++;
-			else if (game->map[i][j] == 'P')
-				elements[1]++;
-			else if (game->map[i][j] == 'E')
-				elements[2]++;
+			check_valid_requisites(game, elements, i, j);
 			j++;
 		}
 		i++;
